@@ -16,5 +16,5 @@ bucket_name = "myimages"
 
 [vars]
 R2_DOMAIN = ""
-PASSWORD = "a326256365"
-SIGN_KEY = "adxsafds12dd3541"
+PASSWORD = ""
+SIGN_KEY = ""
