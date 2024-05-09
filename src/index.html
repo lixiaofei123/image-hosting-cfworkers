@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灼灼其华</title>
+    <style>
+        .bg-box {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            overflow: hidden;
+        }
+
+        .bg {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            display: block;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        .bg-anim {
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+            animation-duration: 10s;
+            animation-name: bg-anim;
+        }
+
+        @keyframes bg-anim {
+            0% {
+                transform: scale(1.0);
+            }
+
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        .dropbox {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dropbox .titlecontainer {
+            width: 100%;
+            height: 400px;
+            position: relative;
+        }
+
+        .dropbox .uploadcontainer {
+            width: 100%;
+            position: relative;
+            flex: 1;
+        }
+
+        .dropbox .titlecontainer .inner-titlecontainer {
+            width: 100%;
+            position: absolute;
+            bottom: 0px;
+        }
+
+        .dropbox .titlebox {
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+
+        .dropbox .titlebox .title {
+            font-size: 38px;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .dropbox .titlebox .subtitle {
+            font-size: 24px;
+            font-weight: 350;
+            color: white;
+            margin-bottom: 35px;
+        }
+
+        .dropbox .titlebox .uploadbutton {
+            border: 2px solid white;
+            color: white;
+            padding: 10px 40px;
+            outline: none;
+            font-size: 20px;
+            background: none;
+            cursor: pointer;
+            font-weight: 400;
+            border-radius: 4px;
+        }
+
+        .dropbox .titlebox .uploadbutton:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+
+        .footer {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            text-align: center;
+            color: white;
+            padding-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: white;
+        }
+
+        .uploadlist {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 40px;
+            position: absolute;
+            top: 20px;
+            bottom: 40px;
+            left: 5%;
+            overflow-y: scroll;
+            overflow-x: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .uploadlist::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .uploadlist::-webkit-scrollbar-track {
+            background: none;
+        }
+
+        .uploadlist::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .uploadlist::-webkit-scrollbar-thumb:hover {
+            background: white;
+        }
+
+        .uploadlist .uploaditem {
+            width: 100px;
+            height: 140px;
+            padding: 5px 5px 0px 5px;
+            background: rgba(255, 255, 255, 0.8);
+            display: inline-block;
+            margin: 10px;
+            position: relative;
+            text-align: center;
+        }
+
+        .uploadlist .uploaditem .qrcodeshow{
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            left: 5px;
+            top: 5px;
+        }
+
+        .uploadlist .uploaditem img {
+            object-fit: cover;
+            width: 100px;
+            height: 100px;
+        }
+
+        .uploadlist .uploaditem a {
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .uploadlist .uploaditem .uploading {
+            color: #909399;
+            cursor: default;
+        }
+
+        .uploadlist .uploaditem .uploaderror {
+            color: #F56C6C;
+        }
+
+        .uploadlist .uploaditem .uploadok {
+            color: #409EFF;
+            text-decoration: underline;
+        }
+
+        .uploadlist .uploaditem .processbar {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 0%;
+            height: 5px;
+            background-color: #409EFF;
+        }
+
+        .uploadlist .uploaditem .qrcode {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            display: none;
+        }
+
+        .uploadlist .uploaditem .qrcode svg {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-box">
+        <div class="bg bg-anim" style="background-image: url('https://img.108429.xyz/file/imagehost/background.jpg');">
+        </div>
+    </div>
+
+    <div class="dropbox" draggable="true" id="dropbox">
+        <div class="titlecontainer">
+            <div class="inner-titlecontainer">
+                <div class="titlebox">
+                    <div class="title">上传并分享你的图片</div>
+                    <div class="subtitle">将图片拖拽到页面的任意区域或者点击下面的上传按钮来上传您的图片</div>
+                    <button class="uploadbutton" id="uploadbutton">
+                        开始上传
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="uploadcontainer">
+            <div class="uploadlist" id="uploadlist">
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        本图床由 <a href="https://www.baidu.com" target="_blank">Image Hosting</a> 和 <a href="https://www.cloudflare.com"
+            target="_blank">Cloudflare</a> 驱动
+    </div>
+
+    <script>
+        const uploadbutton = document.getElementById("uploadbutton")
+        const dropbox = document.getElementById("dropbox")
+        const uploadlist = document.getElementById("uploadlist")
+
+        window.onload = () => {
+
+            uploadbutton.addEventListener("click", () => {
+                let fileinput = document.createElement("input")
+                fileinput.type = "file"
+                fileinput.accept = "image/png, image/jpeg, image/webp"
+                fileinput.multiple = "multiple"
+                fileinput.addEventListener("change", e => {
+                    const files = e.target.files
+                    if (files.length > 0) {
+                        for (let i = 0; i < files.length; i++) {
+                            const file = files[i]
+                            uploadFile(file)
+                        }
+
+                    }
+
+                })
+                fileinput.click()
+            })
+
+            dropbox.addEventListener("dragover", event => {
+                console.log("拖拽中")
+                event.preventDefault()
+            })
+
+            dropbox.addEventListener("drop", event => {
+                console.log("放下")
+                const files = event.dataTransfer.files
+                if (files.length > 0) {
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i]
+                        uploadFile(file)
+                    }
+
+                }
+                event.preventDefault()
+            })
+
+        }
+
+        function formatDate(inputDate, format) {
+            if (!inputDate) return '';
+
+            const padZero = (value) => (value < 10 ? `0${value}` : `${value}`);
+            const parts = {
+                yyyy: inputDate.getFullYear(),
+                MM: padZero(inputDate.getMonth() + 1),
+                dd: padZero(inputDate.getDate()),
+                HH: padZero(inputDate.getHours()),
+                hh: padZero(inputDate.getHours() > 12 ? inputDate.getHours() - 12 : inputDate.getHours()),
+                mm: padZero(inputDate.getMinutes()),
+                ss: padZero(inputDate.getSeconds()),
+                tt: inputDate.getHours() < 12 ? 'AM' : 'PM'
+            };
+
+            return format.replace(/yyyy|MM|dd|HH|hh|mm|ss|tt/g, (match) => parts[match]);
+        }
+
+        async function uploadFile(file) {
+            const name = file.name
+            const timepath = formatDate(new Date(), "yyyy/MM/dd")
+            const key = `${timepath}/${name}`
+            const uploadUrl = `${window.location.origin}/file/${key}`
+
+            let uploadItem = document.createElement("div")
+            uploadItem.className = "uploaditem"
+            uploadItem.innerHTML = `<img /><div class="qrcodeshow" ></div>
+            <div class="qrcode">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="white" d="M0 80C0 53.5 21.5 32 48 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80zM64 96v64h64V96H64zM0 336c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336zm64 16v64h64V352H64zM304 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H304c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48zm80 64H320v64h64V96zM256 304c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16v96c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16v64c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V304zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z"/></svg>
+                    </div>
+                    <a href="javascript:void(0)" class="uploading">上传中</a>
+                    <div class="processbar"></div>`
+            
+            let img = uploadItem.querySelector("img");
+            img.src = URL.createObjectURL(file)
+            uploadlist.appendChild(uploadItem)
+
+            let uploadbtn = uploadItem.querySelector(".uploading")
+            let processbar = uploadItem.querySelector(".processbar")
+            let qrcode = uploadItem.querySelector(".qrcode")
+            let qrcodeshow = uploadItem.querySelector(".qrcodeshow")
+
+            const xhr = new XMLHttpRequest();
+            const success = await new Promise((resolve) => {
+                xhr.upload.addEventListener("progress", (event) => {
+                    if (event.lengthComputable) {
+                        const process = event.loaded / event.total * 100
+                        processbar.style.width = process + "%"
+                    }
+                });
+                xhr.addEventListener("loadend", () => {
+
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        uploadbtn.className = "uploadok"
+                        uploadbtn.innerHTML = "复制图片地址"
+                        processbar.style.width = "100%"
+                        const jsonresp = JSON.parse(xhr.responseText)
+                        let clicklistener = () => {
+                            copyText(jsonresp.url, () => {
+                                setTimeout(() => {
+                                    uploadbtn.innerHTML = "复制成功"
+                                    uploadbtn.style.color = "#67C23A"
+                                    uploadbtn.href = jsonresp.url
+                                    uploadbtn.target = "_blank"
+                                }, 100)
+                                uploadbtn.removeEventListener("click", clicklistener)
+                            })
+                        }
+                        uploadbtn.addEventListener("click", clicklistener)
+                        qrcode.addEventListener("click", ()=>{
+                            new QRCode(qrcodeshow, {
+                                text: jsonresp.url,
+                                width: 100,
+                                height: 100
+                            });
+                            qrcode.style.display = "none"
+                        })
+                        qrcode.style.display = "block"
+
+                        resolve(true);
+                    } else {
+                        uploadbtn.className = "uploaderror"
+                        uploadbtn.innerHTML = "上传失败"
+                        processbar.style.background = "#F56C6C"
+                    }
+
+                });
+                xhr.addEventListener("error", () => {
+                    uploadbtn.className = "uploaderror"
+                    uploadbtn.innerHTML = "上传失败"
+                    processbar.style.background = "#F56C6C"
+                });
+
+                xhr.open("PUT", uploadUrl, true);
+                xhr.setRequestHeader("Content-Type", "application/octet-stream");
+                xhr.send(file);
+            })
+        }
+
+
+        function copyText(text, callback) {
+            callback = callback || function () { }
+            var copyText = document.createElement("input");
+            copyText.value = text
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            callback()
+        }
+
+    </script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+</body>
