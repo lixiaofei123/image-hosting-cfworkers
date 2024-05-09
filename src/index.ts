@@ -21,7 +21,6 @@ async function checkAuth(req: Request, signKey: string, password: string) {
 			return (userpass.length === 2 && userpass[1] === password)
 		} else if (authentication.indexOf("Bearer") === 0) {
 			let jwttoken = authentication.substring(7)
-			console.log("jwt token--->", jwt)
 			return await jwt.verify(jwttoken, signKey)
 		}
 	}
@@ -49,6 +48,7 @@ async function handleGetObject(_request: Request, key: string, env: Env): Promis
 	const headers = new Headers();
 	object.writeHttpMetadata(headers);
 	headers.set('etag', object.httpEtag);
+	headers.set('Cache-Control', "public,max-age=2592000");
 
 	const response = new Response(object.body, {
 		headers,

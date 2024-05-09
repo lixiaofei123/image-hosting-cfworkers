@@ -1,426 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>灼灼其华</title>
+		<script>
+			const config = {
+				background: 'https://img.108429.xyz/file/imagehost/background.webp',
+				avatar: 'https://img.108429.xyz/file/imagehost/avatar.jpg',
+			};
+		</script>
+		<script src="https://img.108429.xyz/file/imagehost/qrcode.min.js"></script>
+		<style>
+			.bg-box {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				right: 0px;
+				bottom: 0px;
+				overflow: hidden;
+			}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>灼灼其华</title>
-    <style>
-        .bg-box {
-            position: absolute;
-            left: 0px;
-            top: 0px;
-            right: 0px;
-            bottom: 0px;
-            overflow: hidden;
-        }
+			.bg {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				right: 0px;
+				bottom: 0px;
+				background-size: cover;
+				background-repeat: no-repeat;
+				background-position: center center;
+				display: block;
+				transform: translateZ(0);
+				backface-visibility: hidden;
+				width: 100%;
+				height: 100%;
+			}
 
-        .bg {
-            position: absolute;
-            left: 0px;
-            top: 0px;
-            right: 0px;
-            bottom: 0px;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            display: block;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            width: 100%;
-            height: 100%;
+			.bg-anim {
+				animation-timing-function: linear;
+				animation-fill-mode: forwards;
+				animation-duration: 10s;
+				animation-name: bg-anim;
+			}
 
-        }
+			@keyframes bg-anim {
+				0% {
+					transform: scale(1);
+				}
 
-        .bg-anim {
-            animation-timing-function: linear;
-            animation-fill-mode: forwards;
-            animation-duration: 10s;
-            animation-name: bg-anim;
-        }
+				100% {
+					transform: scale(1.1);
+				}
+			}
 
-        @keyframes bg-anim {
-            0% {
-                transform: scale(1.0);
-            }
+			.dropbox {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				right: 0px;
+				bottom: 0px;
+				display: flex;
+				flex-direction: column;
+			}
 
-            100% {
-                transform: scale(1.1);
-            }
-        }
+			.dropbox .titlecontainer {
+				width: 100%;
+				height: 400px;
+				position: relative;
+			}
 
-        .dropbox {
-            position: absolute;
-            left: 0px;
-            top: 0px;
-            right: 0px;
-            bottom: 0px;
-            display: flex;
-            flex-direction: column;
-        }
+			.dropbox .uploadcontainer {
+				width: 100%;
+				position: relative;
+				flex: 1;
+			}
 
-        .dropbox .titlecontainer {
-            width: 100%;
-            height: 400px;
-            position: relative;
-        }
+			.dropbox .titlecontainer .inner-titlecontainer {
+				width: 100%;
+				position: absolute;
+				bottom: 0px;
+			}
 
-        .dropbox .uploadcontainer {
-            width: 100%;
-            position: relative;
-            flex: 1;
-        }
+			.dropbox .titlebox {
+				width: 80%;
+				max-width: 600px;
+				text-align: center;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+			}
 
-        .dropbox .titlecontainer .inner-titlecontainer {
-            width: 100%;
-            position: absolute;
-            bottom: 0px;
-        }
+			.dropbox .titlebox .title {
+				font-size: 38px;
+				font-weight: 500;
+				color: white;
+				margin-bottom: 20px;
+			}
 
-        .dropbox .titlebox {
-            width: 80%;
-            max-width: 600px;
-            text-align: center;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        }
+			.dropbox .titlebox .subtitle {
+				font-size: 24px;
+				font-weight: 350;
+				color: white;
+				margin-bottom: 35px;
+			}
 
+			.dropbox .titlebox .uploadbutton {
+				border: 2px solid white;
+				color: white;
+				padding: 10px 40px;
+				outline: none;
+				font-size: 20px;
+				background: none;
+				cursor: pointer;
+				font-weight: 400;
+				border-radius: 4px;
+			}
 
-        .dropbox .titlebox .title {
-            font-size: 38px;
-            font-weight: 500;
-            color: white;
-            margin-bottom: 20px;
-        }
+			.dropbox .titlebox .uploadbutton:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
 
-        .dropbox .titlebox .subtitle {
-            font-size: 24px;
-            font-weight: 350;
-            color: white;
-            margin-bottom: 35px;
-        }
+			.footer {
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				text-align: center;
+				color: white;
+				padding-bottom: 10px;
+				font-size: 14px;
+			}
 
-        .dropbox .titlebox .uploadbutton {
-            border: 2px solid white;
-            color: white;
-            padding: 10px 40px;
-            outline: none;
-            font-size: 20px;
-            background: none;
-            cursor: pointer;
-            font-weight: 400;
-            border-radius: 4px;
-        }
+			.footer a {
+				color: white;
+			}
 
-        .dropbox .titlebox .uploadbutton:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
+			.uploadlist {
+				width: 90%;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 40px;
+				position: absolute;
+				top: 20px;
+				bottom: 40px;
+				left: 5%;
+				overflow-y: scroll;
+				overflow-x: none;
+				background: rgba(255, 255, 255, 0.15);
+			}
 
+			.uploadlist::-webkit-scrollbar {
+				width: 10px;
+			}
 
-        .footer {
-            position: absolute;
-            bottom: 0px;
-            left: 0px;
-            right: 0px;
-            text-align: center;
-            color: white;
-            padding-bottom: 10px;
-            font-size: 14px;
-        }
+			.uploadlist::-webkit-scrollbar-track {
+				background: none;
+			}
 
-        .footer a {
-            color: white;
-        }
+			.uploadlist::-webkit-scrollbar-thumb {
+				background: rgba(255, 255, 255, 0.2);
+			}
 
-        .uploadlist {
-            width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 40px;
-            position: absolute;
-            top: 20px;
-            bottom: 40px;
-            left: 5%;
-            overflow-y: scroll;
-            overflow-x: none;
-            background: rgba(255, 255, 255, 0.15);
-        }
+			.uploadlist::-webkit-scrollbar-thumb:hover {
+				background: white;
+			}
 
-        .uploadlist::-webkit-scrollbar {
-            width: 10px;
-        }
+			.uploadlist .uploaditem {
+				width: 100px;
+				height: 140px;
+				padding: 5px 5px 0px 5px;
+				background: rgba(255, 255, 255, 0.8);
+				display: inline-block;
+				margin: 10px;
+				position: relative;
+				text-align: center;
+			}
 
-        .uploadlist::-webkit-scrollbar-track {
-            background: none;
-        }
+			.uploadlist .uploaditem .qrcodeshow {
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				left: 5px;
+				top: 5px;
+			}
 
-        .uploadlist::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-        }
+			.uploadlist .uploaditem img {
+				object-fit: cover;
+				width: 100px;
+				height: 100px;
+			}
 
-        .uploadlist::-webkit-scrollbar-thumb:hover {
-            background: white;
-        }
+			.uploadlist .uploaditem a {
+				font-size: 14px;
+				text-decoration: none;
+			}
 
-        .uploadlist .uploaditem {
-            width: 100px;
-            height: 140px;
-            padding: 5px 5px 0px 5px;
-            background: rgba(255, 255, 255, 0.8);
-            display: inline-block;
-            margin: 10px;
-            position: relative;
-            text-align: center;
-        }
+			.uploadlist .uploaditem .uploading {
+				color: #909399;
+				cursor: default;
+			}
 
-        .uploadlist .uploaditem .qrcodeshow{
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            left: 5px;
-            top: 5px;
-        }
+			.uploadlist .uploaditem .uploaderror {
+				color: #f56c6c;
+			}
 
-        .uploadlist .uploaditem img {
-            object-fit: cover;
-            width: 100px;
-            height: 100px;
-        }
+			.uploadlist .uploaditem .uploadok {
+				color: #409eff;
+				text-decoration: underline;
+			}
 
-        .uploadlist .uploaditem a {
-            font-size: 14px;
-            text-decoration: none;
-        }
+			.uploadlist .uploaditem .processbar {
+				position: absolute;
+				left: 0px;
+				bottom: 0px;
+				width: 0%;
+				height: 5px;
+				background-color: #409eff;
+			}
 
-        .uploadlist .uploaditem .uploading {
-            color: #909399;
-            cursor: default;
-        }
+			.uploadlist .uploaditem .qrcode {
+				position: absolute;
+				left: 10px;
+				top: 10px;
+				display: none;
+			}
 
-        .uploadlist .uploaditem .uploaderror {
-            color: #F56C6C;
-        }
+			.uploadlist .uploaditem .qrcode svg {
+				width: 25px;
+				height: 25px;
+				cursor: pointer;
+			}
 
-        .uploadlist .uploaditem .uploadok {
-            color: #409EFF;
-            text-decoration: underline;
-        }
+			.lockbox {
+				position: absolute;
+				top: 0px;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				background-color: rgba(255, 255, 255, 0.7);
+				backdrop-filter: blur(5px);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				display: none;
+			}
 
-        .uploadlist .uploaditem .processbar {
-            position: absolute;
-            left: 0px;
-            bottom: 0px;
-            width: 0%;
-            height: 5px;
-            background-color: #409EFF;
-        }
+			.lockbox .loginbox {
+				width: 360px;
+				background: white;
+				box-shadow: 5px 5px 2px #b8b8b8;
+				padding: 30px 30px 50px 30px;
+				text-align: center;
+			}
 
-        .uploadlist .uploaditem .qrcode {
-            position: absolute;
-            left: 10px;
-            top: 10px;
-            display: none;
-        }
+			.lockbox .loginbox .title {
+				font-size: 26px;
+				font-weight: 400;
+				color: #303133;
+				margin-bottom: 20px;
+			}
 
-        .uploadlist .uploaditem .qrcode svg {
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-        }
-    </style>
-</head>
+			.lockbox .loginbox .avatar {
+				width: 100px;
+				height: 100px;
+				overflow: hidden;
+				border-radius: 100px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-bottom: 30px;
+			}
 
-<body>
-    <div class="bg-box">
-        <div class="bg bg-anim" style="background-image: url('https://img.108429.xyz/file/imagehost/background.jpg');">
-        </div>
-    </div>
+			.lockbox .loginbox .avatar img {
+				width: 100px;
+				height: 100px;
+				object-fit: cover;
+			}
 
-    <div class="dropbox" draggable="true" id="dropbox">
-        <div class="titlecontainer">
-            <div class="inner-titlecontainer">
-                <div class="titlebox">
-                    <div class="title">上传并分享你的图片</div>
-                    <div class="subtitle">将图片拖拽到页面的任意区域或者点击下面的上传按钮来上传您的图片</div>
-                    <button class="uploadbutton" id="uploadbutton">
-                        开始上传
-                    </button>
-                </div>
-            </div>
+			.lockbox .loginbox .passwordinput {
+				width: 80%;
+				max-width: 300px;
+				border: 2px solid #606266;
+				border-radius: 2px;
+				margin-left: auto;
+				margin-right: auto;
+				display: flex;
+				padding: 5px 10px;
+			}
 
-        </div>
+			.lockbox .loginbox input {
+				font-size: 22px;
+				line-height: 28px;
+				color: #606266;
+				background-color: #fff;
+				background-image: none;
+				flex: 1;
+				outline: none;
+				width: 100%;
+				border: 0px;
+			}
 
-        <div class="uploadcontainer">
-            <div class="uploadlist" id="uploadlist">
+			.lockbox .loginbox .keyicon {
+				padding-top: 5px;
+				padding-left: 5px;
+				flex-shrink: 0;
+			}
+		</style>
+	</head>
 
-            </div>
-        </div>
+	<body>
+		<div class="bg-box">
+			<div class="bg bg-anim"></div>
+			<script>
+				document.getElementsByClassName('bg')[0].style.backgroundImage = `url(${config.background})`;
+			</script>
+		</div>
 
-    </div>
+		<div class="dropbox" draggable="true" id="dropbox">
+			<div class="titlecontainer">
+				<div class="inner-titlecontainer">
+					<div class="titlebox">
+						<div class="title">上传并分享你的图片</div>
+						<div class="subtitle">将图片拖拽到页面的任意区域或者点击下面的上传按钮来上传您的图片</div>
+						<button class="uploadbutton" id="uploadbutton">开始上传</button>
+					</div>
+				</div>
+			</div>
 
-    <div class="footer">
-        本图床由 <a href="https://www.baidu.com" target="_blank">Image Hosting</a> 和 <a href="https://www.cloudflare.com"
-            target="_blank">Cloudflare</a> 驱动
-    </div>
+			<div class="uploadcontainer">
+				<div class="uploadlist" id="uploadlist"></div>
+			</div>
+		</div>
 
-    <script>
-        const uploadbutton = document.getElementById("uploadbutton")
-        const dropbox = document.getElementById("dropbox")
-        const uploadlist = document.getElementById("uploadlist")
+		<div class="footer">
+			本图床由 <a href="https://www.baidu.com" target="_blank">Image Hosting</a> 和
+			<a href="https://www.cloudflare.com" target="_blank">Cloudflare</a> 驱动
+		</div>
 
-        window.onload = () => {
+		<div class="lockbox" id="lockbox">
+			<div class="loginbox">
+				<div class="avatar">
+					<img class="avatarimg" src="" />
+				</div>
+				<div class="title">请输入访问口令</div>
+				<div class="passwordinput" id="passwordinput">
+					<input id="password" type="password" />
+					<div class="keyicon">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							xmlns:xlink="http://www.w3.org/1999/xlink"
+							width="20"
+							height="20"
+							viewBox="0 0 1000 1000"
+						>
+							<path
+								fill="#606266"
+								d="M67.4 742c16.099999999999994 1 30.799999999999997 1.8999999999999773 45.5 2.7000000000000455 14.299999999999997 0.7999999999999545 28.69999999999999 1.3999999999999773 42.69999999999999 2 0.9000000000000057-30.300000000000068 1.700000000000017-59.700000000000045 2.5999999999999943-89.80000000000007 31.80000000000001 1.7000000000000455 60.70000000000002 3.300000000000068 90.5 4.899999999999977 0.9000000000000057-32.19999999999993 1.700000000000017-60.69999999999993 2.5-90.5 31.30000000000001 1.3000000000000682 60.30000000000001 2.5 91.90000000000003 3.800000000000068 0.19999999999998863-16.200000000000045 0.2999999999999545-31.700000000000045 0.6999999999999886-47.200000000000045 0.5-20.099999999999966 0.8000000000000114-40.299999999999955 2.3000000000000114-60.299999999999955 0.39999999999997726-5.800000000000011 3.3999999999999773-12.700000000000045 7.399999999999977-16.700000000000045 19.899999999999977-19.599999999999966 40.30000000000001-38.69999999999999 61.10000000000002-57.39999999999998 6.2999999999999545-5.600000000000023 7.5-10.899999999999977 6.099999999999966-19-17.30000000000001-103.69999999999999 14.199999999999989-189.9 96.40000000000003-255.5 83.89999999999998-66.9 210.5-69.9 300.9-9.299999999999997 126 84.39999999999999 157.79999999999995 249.90000000000003 69 372.8-63.299999999999955 87.70000000000005-168.5 124-273.70000000000005 97.20000000000005-9-2.300000000000068-14.699999999999932-1.3000000000000682-21.59999999999991 5.199999999999932-120.80000000000007 113.80000000000007-242.10000000000002 227.10000000000002-363.00000000000006 340.70000000000005-6.599999999999994 6.199999999999932-12.899999999999977 8.5-21.799999999999983 8.100000000000023-36.900000000000006-1.8000000000000682-73.9-2.800000000000068-110.80000000000001-4.2000000000000455-27.599999999999994-1.1000000000000227-34.39999999999999-8.600000000000023-33.49999999999999-36.60000000000002 1.499999999999993-49.299999999999955 3.1000000000000014-98.5 4.800000000000004-150.89999999999998z m642.6-444.5c26 27.80000000000001 69.89999999999998 29.69999999999999 97.5 4.199999999999989 28.200000000000045-26.19999999999999 29.100000000000023-69.39999999999998 2.1000000000000227-98.1-26.200000000000045-27.799999999999983-70.60000000000002-29.5-97.5-3.9000000000000057-27 25.80000000000001-27.899999999999977 70.10000000000002-2.1000000000000227 97.80000000000001z"
+							/>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			document.getElementsByClassName('avatarimg')[0].src = config.avatar;
+		</script>
 
-            uploadbutton.addEventListener("click", () => {
-                let fileinput = document.createElement("input")
-                fileinput.type = "file"
-                fileinput.accept = "image/png, image/jpeg, image/webp"
-                fileinput.multiple = "multiple"
-                fileinput.addEventListener("change", e => {
-                    const files = e.target.files
-                    if (files.length > 0) {
-                        for (let i = 0; i < files.length; i++) {
-                            const file = files[i]
-                            uploadFile(file)
-                        }
+		<script>
+			const uploadbutton = document.getElementById('uploadbutton');
+			const dropbox = document.getElementById('dropbox');
+			const uploadlist = document.getElementById('uploadlist');
+			const lockbox = document.getElementById('lockbox');
 
-                    }
+			window.onload = async () => {
+				uploadbutton.addEventListener('click', () => {
+					let fileinput = document.createElement('input');
+					fileinput.type = 'file';
+					fileinput.accept = 'image/png, image/jpeg, image/webp';
+					fileinput.multiple = 'multiple';
+					fileinput.addEventListener('change', (e) => {
+						const files = e.target.files;
+						if (files.length > 0) {
+							for (let i = 0; i < files.length; i++) {
+								const file = files[i];
+								uploadFile(file);
+							}
+						}
+					});
+					fileinput.click();
+				});
 
-                })
-                fileinput.click()
-            })
+				dropbox.addEventListener('dragover', (event) => {
+					console.log('拖拽中');
+					event.preventDefault();
+				});
 
-            dropbox.addEventListener("dragover", event => {
-                console.log("拖拽中")
-                event.preventDefault()
-            })
+				dropbox.addEventListener('drop', (event) => {
+					console.log('放下');
+					const files = event.dataTransfer.files;
+					if (files.length > 0) {
+						for (let i = 0; i < files.length; i++) {
+							const file = files[i];
+							uploadFile(file);
+						}
+					}
+					event.preventDefault();
+				});
 
-            dropbox.addEventListener("drop", event => {
-                console.log("放下")
-                const files = event.dataTransfer.files
-                if (files.length > 0) {
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i]
-                        uploadFile(file)
-                    }
+				let authresp = await fetch('/auth/check', { method: 'POST' });
+				if (authresp.status !== 200) {
+					lockbox.style.display = 'flex';
 
+					const password = document.getElementById('password');
+					const passwordinput = document.getElementById('passwordinput');
+					password.addEventListener('keyup', async (event) => {
+						if (event.keyCode === 13) {
+							let loginresp = await fetch('/auth/login', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+								},
+								body: JSON.stringify({ password: password.value }),
+							});
+							if (loginresp.status === 200) {
+								let body = await loginresp.json();
+								let authentication = body.authentication;
+								setCookie('Authentication', 'Bearer ' + authentication, 25);
+								lockbox.style.display = 'none';
+							} else {
+								// 密码错误
+								passwordinput.style.borderColor = 'red';
+							}
+						}
+					});
+				}
+			};
+
+			function setCookie(cname, cvalue, exdays) {
+				const d = new Date();
+				d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+				let expires = 'expires=' + d.toUTCString();
+				document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+			}
+
+			function formatDate(inputDate, format) {
+				if (!inputDate) return '';
+
+				const padZero = (value) => (value < 10 ? `0${value}` : `${value}`);
+				const parts = {
+					yyyy: inputDate.getFullYear(),
+					MM: padZero(inputDate.getMonth() + 1),
+					dd: padZero(inputDate.getDate()),
+					HH: padZero(inputDate.getHours()),
+					hh: padZero(inputDate.getHours() > 12 ? inputDate.getHours() - 12 : inputDate.getHours()),
+					mm: padZero(inputDate.getMinutes()),
+					ss: padZero(inputDate.getSeconds()),
+					tt: inputDate.getHours() < 12 ? 'AM' : 'PM',
+				};
+
+				return format.replace(/yyyy|MM|dd|HH|hh|mm|ss|tt/g, (match) => parts[match]);
+			}
+
+			async function uploadFile(file) {
+				const name = file.name;
+                const filetype = file.type
+                if(filetype.indexOf("image") !== 0){
+                    return
                 }
-                event.preventDefault()
-            })
 
-        }
+				const timepath = formatDate(new Date(), 'yyyy/MM/dd');
+				const key = `${timepath}/${name}`;
+				const uploadUrl = `${window.location.origin}/file/${key}`;
 
-        function formatDate(inputDate, format) {
-            if (!inputDate) return '';
-
-            const padZero = (value) => (value < 10 ? `0${value}` : `${value}`);
-            const parts = {
-                yyyy: inputDate.getFullYear(),
-                MM: padZero(inputDate.getMonth() + 1),
-                dd: padZero(inputDate.getDate()),
-                HH: padZero(inputDate.getHours()),
-                hh: padZero(inputDate.getHours() > 12 ? inputDate.getHours() - 12 : inputDate.getHours()),
-                mm: padZero(inputDate.getMinutes()),
-                ss: padZero(inputDate.getSeconds()),
-                tt: inputDate.getHours() < 12 ? 'AM' : 'PM'
-            };
-
-            return format.replace(/yyyy|MM|dd|HH|hh|mm|ss|tt/g, (match) => parts[match]);
-        }
-
-        async function uploadFile(file) {
-            const name = file.name
-            const timepath = formatDate(new Date(), "yyyy/MM/dd")
-            const key = `${timepath}/${name}`
-            const uploadUrl = `${window.location.origin}/file/${key}`
-
-            let uploadItem = document.createElement("div")
-            uploadItem.className = "uploaditem"
-            uploadItem.innerHTML = `<img /><div class="qrcodeshow" ></div>
+				let uploadItem = document.createElement('div');
+				uploadItem.className = 'uploaditem';
+				uploadItem.innerHTML = `<img /><div class="qrcodeshow" ></div>
             <div class="qrcode">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="white" d="M0 80C0 53.5 21.5 32 48 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80zM64 96v64h64V96H64zM0 336c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336zm64 16v64h64V352H64zM304 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H304c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48zm80 64H320v64h64V96zM256 304c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16v96c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16v64c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V304zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z"/></svg>
                     </div>
                     <a href="javascript:void(0)" class="uploading">上传中</a>
-                    <div class="processbar"></div>`
-            
-            let img = uploadItem.querySelector("img");
-            img.src = URL.createObjectURL(file)
-            uploadlist.appendChild(uploadItem)
+                    <div class="processbar"></div>`;
 
-            let uploadbtn = uploadItem.querySelector(".uploading")
-            let processbar = uploadItem.querySelector(".processbar")
-            let qrcode = uploadItem.querySelector(".qrcode")
-            let qrcodeshow = uploadItem.querySelector(".qrcodeshow")
+				let img = uploadItem.querySelector('img');
+				img.src = URL.createObjectURL(file);
+				uploadlist.appendChild(uploadItem);
 
-            const xhr = new XMLHttpRequest();
-            const success = await new Promise((resolve) => {
-                xhr.upload.addEventListener("progress", (event) => {
-                    if (event.lengthComputable) {
-                        const process = event.loaded / event.total * 100
-                        processbar.style.width = process + "%"
-                    }
-                });
-                xhr.addEventListener("loadend", () => {
+				let uploadbtn = uploadItem.querySelector('.uploading');
+				let processbar = uploadItem.querySelector('.processbar');
+				let qrcode = uploadItem.querySelector('.qrcode');
+				let qrcodeshow = uploadItem.querySelector('.qrcodeshow');
 
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        uploadbtn.className = "uploadok"
-                        uploadbtn.innerHTML = "复制图片地址"
-                        processbar.style.width = "100%"
-                        const jsonresp = JSON.parse(xhr.responseText)
-                        let clicklistener = () => {
-                            copyText(jsonresp.url, () => {
-                                setTimeout(() => {
-                                    uploadbtn.innerHTML = "复制成功"
-                                    uploadbtn.style.color = "#67C23A"
-                                    uploadbtn.href = jsonresp.url
-                                    uploadbtn.target = "_blank"
-                                }, 100)
-                                uploadbtn.removeEventListener("click", clicklistener)
-                            })
-                        }
-                        uploadbtn.addEventListener("click", clicklistener)
-                        qrcode.addEventListener("click", ()=>{
-                            new QRCode(qrcodeshow, {
-                                text: jsonresp.url,
-                                width: 100,
-                                height: 100
-                            });
-                            qrcode.style.display = "none"
-                        })
-                        qrcode.style.display = "block"
+				const xhr = new XMLHttpRequest();
+				const success = await new Promise((resolve) => {
+					xhr.upload.addEventListener('progress', (event) => {
+						if (event.lengthComputable) {
+							const process = (event.loaded / event.total) * 100;
+							processbar.style.width = process + '%';
+						}
+					});
+					xhr.addEventListener('loadend', () => {
+						if (xhr.readyState === 4 && xhr.status === 200) {
+							uploadbtn.className = 'uploadok';
+							uploadbtn.innerHTML = '复制图片地址';
+							processbar.style.width = '100%';
+							const jsonresp = JSON.parse(xhr.responseText);
+							let clicklistener = () => {
+								copyText(jsonresp.url, () => {
+									setTimeout(() => {
+										uploadbtn.innerHTML = '复制成功';
+										uploadbtn.style.color = '#67C23A';
+										uploadbtn.href = jsonresp.url;
+										uploadbtn.target = '_blank';
+									}, 100);
+									uploadbtn.removeEventListener('click', clicklistener);
+								});
+							};
+							uploadbtn.addEventListener('click', clicklistener);
+							qrcode.addEventListener('click', () => {
+								new QRCode(qrcodeshow, {
+									text: jsonresp.url,
+									width: 100,
+									height: 100,
+								});
+								qrcode.style.display = 'none';
+							});
+							qrcode.style.display = 'block';
 
-                        resolve(true);
-                    } else {
-                        uploadbtn.className = "uploaderror"
-                        uploadbtn.innerHTML = "上传失败"
-                        processbar.style.background = "#F56C6C"
-                    }
+							resolve(true);
+						} else {
+							uploadbtn.className = 'uploaderror';
+							uploadbtn.innerHTML = '上传失败';
+							processbar.style.background = '#F56C6C';
+						}
+					});
+					xhr.addEventListener('error', () => {
+						uploadbtn.className = 'uploaderror';
+						uploadbtn.innerHTML = '上传失败';
+						processbar.style.background = '#F56C6C';
+					});
 
-                });
-                xhr.addEventListener("error", () => {
-                    uploadbtn.className = "uploaderror"
-                    uploadbtn.innerHTML = "上传失败"
-                    processbar.style.background = "#F56C6C"
-                });
+					xhr.open('PUT', uploadUrl, true);
+					xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+					xhr.send(file);
+				});
+			}
 
-                xhr.open("PUT", uploadUrl, true);
-                xhr.setRequestHeader("Content-Type", "application/octet-stream");
-                xhr.send(file);
-            })
-        }
-
-
-        function copyText(text, callback) {
-            callback = callback || function () { }
-            var copyText = document.createElement("input");
-            copyText.value = text
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-            callback()
-        }
-
-    </script>
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-
-</body>
+			function copyText(text, callback) {
+				callback = callback || function () {};
+				var copyText = document.createElement('input');
+				copyText.value = text;
+				copyText.select();
+				copyText.setSelectionRange(0, 99999);
+				navigator.clipboard.writeText(copyText.value);
+				callback();
+			}
+		</script>
+	</body>
+</html>
