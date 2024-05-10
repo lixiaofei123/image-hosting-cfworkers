@@ -12,7 +12,7 @@ interface Env {
 
 async function checkAuth(req: Request, signKey: string, password: string) {
 	const cookie = parse(req.headers.get("Cookie") || "");
-	const authentication = cookie["Authentication"] || req.headers.get("authorization") || ""
+	const authentication = cookie["Authentication"] || req.headers.get("authentication") || ""
 	if (authentication !== "") {
 		if (authentication.indexOf("Basic") === 0) {
 			const encodedstr = authentication.substring(6)
