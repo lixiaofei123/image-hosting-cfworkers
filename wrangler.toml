@@ -1,0 +1,20 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "image-hosting-cfworkers"
+main = "src/index.ts"
+compatibility_date = "2024-05-02"
+compatibility_flags = ["nodejs_compat"]
+
+
+
+# Bind an R2 Bucket. Use R2 to store arbitrarily large blobs of data, such as files.
+# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#r2-buckets
+
+[[r2_buckets]]
+binding = "MY_BUCKET"
+bucket_name = "myimages"
+
+
+[vars]
+R2_DOMAIN = ""
+PASSWORD = ""
+SIGN_KEY = ""
