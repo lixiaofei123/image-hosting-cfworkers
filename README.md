@@ -19,12 +19,14 @@
     </tr>
 </table>
 
-本图床也提供了Docker镜像运行的方式，此方式不依赖Cloudflare以及R2对象， 命令如下
+[不推荐使用此方法] 本图床也提供了Docker镜像运行的方式，此方式不依赖Cloudflare以及R2对象， 命令如下
 
 > 如果使用Docker运行本程序的话，需要使用Nginx之类的服务用HTTPS协议来代理本服务，否则页面上的复制链接功能将不会起作用
 
 ```
 docker run -d -p 8080:8080 --env "PASSWORD=1123456" --env "SIGN_KEY=dsfdsfd" -v /home/lixiaofei/testdata:/usr/src/app/.wrangler/state/v3/r2  mrlee326/imagehosting
+
+// PASSWORD为访问密码，不设置的话则允许公开上传，SIGN_KEY为签名key，设置的复杂一些就行了
 ```
 
 
