@@ -189,7 +189,6 @@ async function authMiddleware(request: Request, env: Env) {
 		const prefix = authRoutes[i].prefix
 		const methods = authRoutes[i].methods
 		if(pathname.indexOf(prefix) === 0 && methods.split(",").some(i => i === method)){
-			console.log(pathname, "需要进行检查")
 			return await checkAuth(request, SIGN_KEY, PASSWORD)
 		}
 	}
