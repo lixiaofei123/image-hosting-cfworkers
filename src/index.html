@@ -483,9 +483,10 @@
 		}
 
 
-		function guessIsPic(url){
-			const suffix = url.substr(url.lastIndexOf(".") + 1).toLowerCase()
-			return suffix === "png" || suffix === "jpg" || suffix === "jpeg" 
+		function guessIsPic(url) {
+			let pathname = new URL(url).pathname
+			const suffix = pathname.substr(pathname.lastIndexOf(".") + 1).toLowerCase()
+			return suffix === "png" || suffix === "jpg" || suffix === "jpeg"
 				|| suffix === "webp" || suffix === "gif";
 		}
 
@@ -526,6 +527,12 @@
 					let img = uploadItem.querySelector('img')
 					let linkicon = uploadItem.querySelector('.linkicon')
 
+					if (guessIsPic(proxyurl)) {
+						img.src = proxyurl
+						img.style.display = "block"
+						linkicon.style.display = "none"
+					}
+
 
 					let fetchurl = "/fetchUrl/" + proxyurl
 					let resp = await fetch(fetchurl, {
@@ -536,11 +543,6 @@
 						uploadbtn.className = 'uploadok';
 						uploadbtn.innerHTML = '复制资源地址';
 						const url = jsonresp.url
-						if(guessIsPic(url)){
-							img.src = url
-							img.style.display = "block"
-							linkicon.style.display = "none"
-						}
 						let clicklistener = () => {
 							copyText(jsonresp.url, () => {
 								setTimeout(() => {
