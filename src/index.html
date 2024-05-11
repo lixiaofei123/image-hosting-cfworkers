@@ -190,7 +190,16 @@
 			object-fit: cover;
 			width: 100px;
 			height: 100px;
+
 		}
+
+		.uploadlist .uploaditem .img {
+			object-fit: cover;
+			background: #424447;
+			width: 100px;
+			height: 100px;
+		}
+
 
 		.uploadlist .uploaditem a {
 			font-size: 14px;
@@ -330,7 +339,9 @@
 		</div>
 
 		<div class="uploadcontainer">
-			<div class="uploadlist" id="uploadlist"></div>
+			<div class="uploadlist" id="uploadlist">
+
+			</div>
 		</div>
 	</div>
 
@@ -405,7 +416,10 @@
 
 			document.addEventListener("paste", event => {
 				const clipboardData = (event.clipboardData || window.clipboardData);
-				//console.log(clipboardData.getData('Text'))
+				const copyedtext = clipboardData.getData('Text')
+				if (copyedtext.indexOf("https://") === 0 || copyedtext.indexOf("http://") === 0) {
+					uploadFileFromUrl(copyedtext);
+				}
 				const files = Array.from(clipboardData.files);
 				if (files.length > 0) {
 					for (let i = 0; i < files.length; i++) {
@@ -468,6 +482,97 @@
 			return format.replace(/yyyy|MM|dd|HH|hh|mm|ss|tt/g, (match) => parts[match]);
 		}
 
+
+		function guessIsPic(url){
+			const suffix = url.substr(url.lastIndexOf(".") + 1).toLowerCase()
+			return suffix === "png" || suffix === "jpg" || suffix === "jpeg" 
+				|| suffix === "webp" || suffix === "gif";
+		}
+
+		async function uploadFileFromUrl(copyedtext) {
+			const proxyurl = copyedtext.split("\n")[0].trim()
+			try {
+				const proxyorigin = new URL(proxyurl).origin
+				const curorigin = window.location.origin
+				if (proxyorigin !== curorigin) {
+
+					let uploadItem = document.createElement('div');
+					uploadItem.className = 'uploaditem';
+					uploadItem.innerHTML = `<div class="img">
+						    <img style="display:none" />
+							<div class="linkicon">
+								<div style="height: 18px"></div>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="60" height="60">
+									<path fill="white"
+										d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z" />
+								</svg>
+							</div>
+							
+					</div>
+					<div class="qrcodeshow"></div>
+					<div class="qrcode">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+							<path fill="white"
+								d="M0 80C0 53.5 21.5 32 48 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80zM64 96v64h64V96H64zM0 336c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336zm64 16v64h64V352H64zM304 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H304c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48zm80 64H320v64h64V96zM256 304c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16v96c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16v64c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V304zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
+						</svg>
+					</div>
+					<a href="javascript:void(0)" class="uploading">上传中</a>`;
+
+					uploadlist.appendChild(uploadItem);
+
+					let uploadbtn = uploadItem.querySelector('.uploading');
+					let qrcode = uploadItem.querySelector('.qrcode');
+					let qrcodeshow = uploadItem.querySelector('.qrcodeshow');
+					let img = uploadItem.querySelector('img')
+					let linkicon = uploadItem.querySelector('.linkicon')
+
+
+					let fetchurl = "/fetchUrl/" + proxyurl
+					let resp = await fetch(fetchurl, {
+						method: "POST"
+					})
+					if (resp.status === 200) {
+						let jsonresp = await resp.json()
+						uploadbtn.className = 'uploadok';
+						uploadbtn.innerHTML = '复制资源地址';
+						const url = jsonresp.url
+						if(guessIsPic(url)){
+							img.src = url
+							img.style.display = "block"
+							linkicon.style.display = "none"
+						}
+						let clicklistener = () => {
+							copyText(jsonresp.url, () => {
+								setTimeout(() => {
+									uploadbtn.innerHTML = '复制成功';
+									uploadbtn.style.color = '#67C23A';
+									uploadbtn.href = jsonresp.url;
+									uploadbtn.target = '_blank';
+								}, 100);
+								uploadbtn.removeEventListener('click', clicklistener);
+							});
+						};
+						uploadbtn.addEventListener('click', clicklistener);
+						qrcode.addEventListener('click', () => {
+							new QRCode(qrcodeshow, {
+								text: jsonresp.url,
+								width: 100,
+								height: 100,
+							});
+							qrcode.style.display = 'none';
+						});
+						qrcode.style.display = 'block';
+					} else {
+						uploadbtn.className = 'uploaderror';
+						uploadbtn.innerHTML = '上传失败';
+					}
+				}
+
+			} catch (e) {
+				console.log(e)
+			}
+		}
+
 		async function uploadFile(file) {
 			const name = file.name;
 			const filetype = file.type
@@ -482,7 +587,7 @@
 
 			let uploadItem = document.createElement('div');
 			uploadItem.className = 'uploaditem';
-			uploadItem.innerHTML = `<img /><div class="qrcodeshow" ></div>
+			uploadItem.innerHTML = `<div class="img"><img /></div><div class="qrcodeshow" ></div>
             <div class="qrcode">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="white" d="M0 80C0 53.5 21.5 32 48 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80zM64 96v64h64V96H64zM0 336c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336zm64 16v64h64V352H64zM304 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H304c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48zm80 64H320v64h64V96zM256 304c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16v96c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16v64c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V304zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z"/></svg>
                     </div>
@@ -570,7 +675,7 @@
 				extension = parts.pop().toLowerCase();
 			}
 
-			var randomName = (Math.ceil(Math.random() * 1000) + new Date().getTime() * 1000).toString(36) 
+			var randomName = (Math.ceil(Math.random() * 1000) + new Date().getTime() * 1000).toString(36)
 			if (extension !== "") {
 				randomName += '.' + extension;
 			}
