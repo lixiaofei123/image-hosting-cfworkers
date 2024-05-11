@@ -59,7 +59,7 @@ npm install
 
 
 ```
-node_modules/wrangler/bin/wrangler.js  r2 bucket create mybucket  # mybucket 换成自己想要的存储桶名字
+node_modules/wrangler/bin/wrangler.js  r2 bucket create myimages  # myimages 换成自己想要的存储桶名字
 ```
 
 这一步中间可能会要求进行授权，具体是要求打开一个网页，然后在网页上进行授权流程。如果你使用本地的电脑直接进行的本安装步骤的话，那么这一步应该不会有什么问题。如果你是远程连接到某台服务器上安装的话，需要根据下面步骤进行操作。 a. 复制授权的url，在本地浏览器上打开，进行授权等流程。 b 授权完毕后，浏览器最终跳转到一个http://localhost:8976/oauth/callback/xxxx地址 (xxxx地址是我随便写的，以实际显示的为准)，此时浏览器上显示无法访问此地址。 c 复制浏览器上无法访问的这个地址，在终端软件上另外打开一个远程服务器的新会话，直接执行 curl "{替换成复制的地址}"，即可完成授权流程。 请注意，整个命令执行超时时间，如果显示超时失败，重新尝试即可
