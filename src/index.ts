@@ -46,7 +46,7 @@ async function handleGetObject(_request: Request, key: string, env: Env): Promis
 	if (object === null) {
 		throw new Error('Object Not Found');
 	}
-	const headers = new Headers();
+	let headers = new Headers();
 	object.writeHttpMetadata(headers);
 	headers.set('etag', object.httpEtag);
 	headers.set('Cache-Control', "public,max-age=2592000");
