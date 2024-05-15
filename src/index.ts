@@ -7,12 +7,13 @@ interface Env {
 	R2_DOMAIN: String;
 	PASSWORD: string;
 	SIGN_KEY: string;
+	CORS: string
 
 }
 
 async function checkAuth(req: Request, signKey: string, password: string) {
 	const cookie = parse(req.headers.get("Cookie") || "");
-	const authentication = cookie["Authentication"] || req.headers.get("authentication") || ""
+	const authentication = cookie["Authentication"] || req.headers.get("authentication") || (new URL(req.url)).searchParams.get("Authentication") || ""
 	if (authentication !== "") {
 		if (authentication.indexOf("Basic") === 0) {
 			const encodedstr = authentication.substring(6)
@@ -196,14 +197,30 @@ async function authMiddleware(request: Request, env: Env) {
 	return true
 }
 
+async function wrapResponse(resp: Response, env: Env) : Promise<Response>{
+	if(env.CORS !== "disabled"){
+		resp.headers.set("Access-Control-Allow-Origin","*")
+		resp.headers.set("Access-Control-Allow-Credentials","true")
+		resp.headers.set("Access-Control-Allow-Methods","*")
+		resp.headers.set("Access-Control-Allow-Headers","*")
+		resp.headers.set("Access-Control-Expose-Headers","*")
+		resp.headers.set("Access-Control-Expose-Headers","600")
+	}
+	return resp
+}
+
 export default {
 	async fetch(request: Request, env: Env, context: ExecutionContext): Promise<Response> {
+
+		if(request.method == "OPTIONS"){
+			return wrapResponse(new Response(""), env);
+		}
 		
 		const url = new URL(request.url);
 		const pathname = url.pathname;
 
 		if(await authMiddleware(request, env) === false){
-			return new Response("鉴权失败", { status: 401 })
+			return wrapResponse(new Response("鉴权失败", { status: 401 }), env)
 		}
 		
 		if (pathname === '' || pathname === '/') {
@@ -211,11 +228,11 @@ export default {
 		}
 
 		if (pathname.indexOf('/file/') === 0) {
-			return await handleObject(request, env, context);
+			return await wrapResponse(await handleObject(request, env, context), env)
 		}
 
 		if (pathname.indexOf('/fetchUrl/') === 0 && request.method === "POST") {
-			return handleFetchUrl(request, env)
+			return await wrapResponse(await handleFetchUrl(request, env), env)
 		}
 
 		if(pathname === "/auth/login" && request.method === "POST"){
@@ -227,19 +244,19 @@ export default {
 				const pwd: string = bodyjson["password"]
 				if (pwd === PASSWORD) {
 					const authentication = await jwt.sign({ exp: Math.floor(Date.now() / 1000 + 60 * 60 * 24 * 30) }, SIGN_KEY)
-					return Response.json({
+					return await wrapResponse(Response.json({
 						authentication: authentication
-					})
+					}), env)
 				} else {
-					return new Response("密码错误", { status: 401 })
+					return await wrapResponse(new Response("密码错误", { status: 401 }), env)
 				}
 			} else {
-				return Response.json({})
+				return await wrapResponse(Response.json({}), env)
 			}
 		}
 
 		if (url.pathname === "/auth/check" && request.method === "POST") {
-			return new Response("", { status: 200 })
+			return await wrapResponse(new Response("", { status: 200 }), env)
 		}
 
 		return Response.json(
