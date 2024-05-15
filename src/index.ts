@@ -68,7 +68,7 @@ async function handleObject(request: Request, env: Env, context: ExecutionContex
 
 		switch (request.method) {
 			case 'PUT':
-				return await handlePutObject(request, key, request.body, env);
+				return await wrapResponse(await handlePutObject(request, key, request.body, env), env);
 			case 'GET':
 				const cacheKey = new URL(request.url);
 				const cache = caches.default;
@@ -87,7 +87,7 @@ async function handleObject(request: Request, env: Env, context: ExecutionContex
 				return response;
 
 			case 'DELETE':
-				return await handleDeleteObject(request, key, env);
+				return await wrapResponse(await handleDeleteObject(request, key, env), env);
 
 			default:
 				throw new Error('Method is not allowed');
@@ -226,7 +226,7 @@ export default {
 		}
 
 		if (pathname.indexOf('/file/') === 0) {
-			return await wrapResponse(await handleObject(request, env, context), env)
+			return await handleObject(request, env, context)
 		}
 
 		if (pathname.indexOf('/fetchUrl/') === 0 && request.method === "POST") {
