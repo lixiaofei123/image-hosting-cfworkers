@@ -51,11 +51,9 @@ async function handleGetObject(_request: Request, key: string, env: Env): Promis
 	headers.set('etag', object.httpEtag);
 	headers.set('Cache-Control', "public,max-age=2592000");
 
-	const response = new Response(object.body, {
+	return new Response(object.body, {
 		headers,
 	});
-
-	return response;
 }
 
 async function handleDeleteObject(_request: Request, key: string, env: Env): Promise<Response> {
