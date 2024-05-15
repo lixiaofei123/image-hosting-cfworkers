@@ -1,6 +1,7 @@
 import index from './index.html';
 import { parse } from "cookie";
 import jwt from '@tsndr/cloudflare-worker-jwt'
+import { Buffer } from "node:buffer";
 
 interface Env {
 	MY_BUCKET: R2Bucket;
