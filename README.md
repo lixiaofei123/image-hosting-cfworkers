@@ -2,6 +2,8 @@
 
 基于Cloudflare R2对象存储和Workers的免费图床程序，安装前请确认自己已经拥有Cloudflare账号和已经开通Cloudflare R2对象存储功能。
 
+### 基于Clloudflare Workers间接访问R2存储，不怕被刷，
+
 功能特性
 - 支持密码
 - 支持拖拽、文件选取、直接粘贴文件、直接粘贴URL 四种上传方式
